@@ -74,9 +74,10 @@ class Volunteer(models.Model):
 
 # Training <-many:one- Volunteer
 class Training(models.Model):
-    YEAR_CHOICE = map(
+    YEAR_CHOICE = [(-1,'-1',)]
+    YEAR_CHOICE.extend(map(
         lambda x: (x, str(x)),
-        range(datetime.now().year, 1979, -1))
+        range(datetime.now().year, 1979, -1)))
 
     # A Volunteer is the foreign key for Training
     volunteer = models.ForeignKey(
@@ -102,8 +103,8 @@ class Training(models.Model):
     )
     expiration_year = models.IntegerField(
         choices=YEAR_CHOICE,
-        null=True,
-        default=None
+        null=False,
+        default=-1
     )
     remind = models.BooleanField(
         verbose_name="Remind when expiring?",
