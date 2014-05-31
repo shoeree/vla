@@ -74,30 +74,15 @@ class Volunteer(models.Model):
 
 # Experiences <-many:one- Volunteer
 class Experience(models.Model):
-    YEAR_CHOICE = map(lambda x: (x, str(x)), range(1980, datetime.now().year))
+    YEAR_CHOICE = map(
+        lambda x: (x, str(x)),
+        range(1980, datetime.now().year+1))
 
     # A Volunteer is the foreign key for an Experience
     volunteer = models.ForeignKey(
         Volunteer,
-        #to_field='id',
-        #db_index=False,
         on_delete=models.CASCADE
     )
-
-    # Fields which reference Volunteer information
-    #email = models.ForeignKey(
-        #Volunteer,
-        #to_field='email',
-        #db_index=False,
-        #unique=True,
-        #on_delete=models.DO_NOTHING
-    #)
-    #phone = models.ForeignKey(
-        #Volunteer,
-        #to_field='phone',
-        #db_index=False,
-        #on_delete=models.DO_NOTHING
-    #)
 
     # Event/experience information
     event_year = models.IntegerField(
@@ -118,8 +103,6 @@ class Experience(models.Model):
 
     # Meta options
     class Meta:
-        # "composite key"
-        #index_together = ['event_year', 'event_name']
         verbose_name = "event experience"
         verbose_name_plural = "events"
         ordering = ['-event_year', 'event_name']

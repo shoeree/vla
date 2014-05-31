@@ -45,8 +45,8 @@ class ExperienceAdmin(admin.ModelAdmin):
     def volunteer_contact_info(self, obj):
         phone = obj.volunteer.phone
         email = obj.volunteer.email
-        phone = '_' if phone is None else phone
-        email = '_' if email is None else email
+        phone = '_' if phone is '' else phone
+        email = '_' if email is '' else email
         return "Phone: %s, Email: %s" %(phone, email,)
 
 admin.site.register(Volunteer, VolunteerAdmin)
