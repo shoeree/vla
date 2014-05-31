@@ -31,7 +31,7 @@ class TrainingAdmin(admin.ModelAdmin):
         'expiration_year',
         'remind',
         'volunteer_contact_info',
-        'volunteer_status'.
+        'volunteer_status',
     )
     fields = (
         'volunteer',
