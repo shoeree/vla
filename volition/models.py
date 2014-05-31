@@ -35,7 +35,7 @@ class Volunteer(models.Model):
 
     # Contact info
     email = models.EmailField(
-        max_length=60,
+        max_length=254,
         null=True,
         blank=True,
         default=None,
@@ -48,7 +48,7 @@ class Volunteer(models.Model):
         default=None
     )
     address = models.CharField(
-        max_length=120,
+        max_length=254,
         null=True,
         blank=True,
         default=None
@@ -68,50 +68,64 @@ class Volunteer(models.Model):
 
     # Human-friendly reading method
     def __unicode__(self):
-        return u'%s, %s (email: %s, phone: %s)' % (
+        return u'%s, %s' % (
             self.last_name, self.first_name,
-            self.email, self.phone,
         )
 
 # Experiences <-many:one- Volunteer
 class Experience(models.Model):
-	YEAR_CHOICE = map(lambda x: (x, str(x)), range(1980, datetime.now().year))
+    YEAR_CHOICE = map(lambda x: (x, str(x)), range(1980, datetime.now().year))
 
-	# A Volunteer is the foreign key for an Experience
-	volunteer = models.ForeignKey(
-		Volunteer,
-		to_field='id',
-		db_index=False,
-		on_delete=models.CASCADE
-	)
+    # A Volunteer is the foreign key for an Experience
+    volunteer = models.ForeignKey(
+        Volunteer,
+        #to_field='id',
+        #db_index=False,
+        on_delete=models.CASCADE
+    )
 
-	# Event/experience information
-	event_year = models.IntegerField(
-		choices=YEAR_CHOICE,
-		null=False,
-		default=datetime.now().year,
-	)
-	event_name = models.CharField(
-		max_length=120,
-		null=False
-	)
-	work_hours = models.DecimalField(
-		max_digits=6,
-		decimal_places=2,
-		null=True,
-		default=4.00
-	)
+    # Fields which reference Volunteer information
+    #email = models.ForeignKey(
+        #Volunteer,
+        #to_field='email',
+        #db_index=False,
+        #unique=True,
+        #on_delete=models.DO_NOTHING
+    #)
+    #phone = models.ForeignKey(
+        #Volunteer,
+        #to_field='phone',
+        #db_index=False,
+        #on_delete=models.DO_NOTHING
+    #)
 
-	# Meta options
-	class Meta:
-		# "composite key"
-		#index_together = ['event_year', 'event_name']
-		verbose_name = "event experience"
-		verbose_name_plural = "events"
-		ordering = ['-event_year', 'event_name']
+    # Event/experience information
+    event_year = models.IntegerField(
+        choices=YEAR_CHOICE,
+        null=False,
+        default=datetime.now().year,
+    )
+    event_name = models.CharField(
+        max_length=120,
+        null=False
+    )
+    work_hours = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        default=4.00
+    )
 
-	# Human-friendly read format
-	def __unicode__(self):
-		return u'%s (%d) : %d h' % (
-			self.event_name, self.event_year, self.work_hours
-		)
+    # Meta options
+    class Meta:
+        # "composite key"
+        #index_together = ['event_year', 'event_name']
+        verbose_name = "event experience"
+        verbose_name_plural = "events"
+        ordering = ['-event_year', 'event_name']
+
+    # Human-friendly read format
+    def __unicode__(self):
+        return u'%s (%d) : %d h' % (
+            self.event_name, self.event_year, self.work_hours
+        )
