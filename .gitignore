@@ -3,3 +3,6 @@
 static/*
 db.sqlite3
 secret_*
+*.TMP
+*.tmp
+
