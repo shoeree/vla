@@ -72,11 +72,64 @@ class Volunteer(models.Model):
             self.last_name, self.first_name,
         )
 
+# Training <-many:one- Volunteer
+class Training(models.Model):
+    YEAR_CHOICE = map(
+        lambda x: (x, str(x)),
+        range(datetime.now().year, 1979, -1))
+
+    # A Volunteer is the foreign key for Training
+    volunteer = models.ForeignKey(
+        Volunteer,
+        on_delete=models.CASCADE
+    )
+
+    # Training information
+    name = models.CharField(
+        max_length=120,
+        null=False
+    )
+    year = models.IntegerField(
+        choices=YEAR_CHOICE,
+        null=False,
+        default=datetime.now().year
+    )
+    location = models.CharField(
+        max_length=254,
+        blank=True,
+        null=True,
+        default=None
+    )
+    expiration_year = models.IntegerField(
+        choices=YEAR_CHOICE,
+        null=True,
+        default=None
+    )
+    remind = models.BooleanField(
+        verbose_name="Remind when expiring?",
+        null=False,
+        default=False
+    )
+    #TODO: approved? status, upload credential pic, month/day expiry ?
+
+    # Meta options
+    class Meta:
+        verbose_name = "training and qualifications"
+        verbose_name_plural = "training and qualifications"
+        ordering = ['name', '-year', '-expiration_year']
+
+    # Human-friendly read format
+    def __unicode__(self):
+        return u'%s (%d), Expires: %d' %(
+            self.name, self.year,
+            self.expiration_year if self._expiration_year is not None else 'Never',
+        )
+
 # Experiences <-many:one- Volunteer
 class Experience(models.Model):
     YEAR_CHOICE = map(
         lambda x: (x, str(x)),
-        range(datetime.now().year+1, 1980, -1))
+        range(datetime.now().year, 1979, -1))
 
     # A Volunteer is the foreign key for an Experience
     volunteer = models.ForeignKey(
@@ -88,7 +141,7 @@ class Experience(models.Model):
     event_year = models.IntegerField(
         choices=YEAR_CHOICE,
         null=False,
-        default=datetime.now().year,
+        default=datetime.now().year
     )
     event_name = models.CharField(
         max_length=120,
@@ -104,7 +157,7 @@ class Experience(models.Model):
     # Meta options
     class Meta:
         verbose_name = "event experience"
-        verbose_name_plural = "events"
+        verbose_name_plural = "events experience"
         ordering = ['-event_year', 'event_name']
 
     # Human-friendly read format
@@ -112,3 +165,4 @@ class Experience(models.Model):
         return u'%s (%d) : %d h' % (
             self.event_name, self.event_year, self.work_hours
         )
+

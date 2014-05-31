@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from volition.models import Volunteer, Experience
+from volition.models import Volunteer, Training, Experience
 
 class VolunteerAdmin(admin.ModelAdmin):
     list_display = (
@@ -23,6 +23,39 @@ class VolunteerAdmin(admin.ModelAdmin):
         'is_active',
     )
 
+class TrainingAdmin(admin.ModelAdmin):
+    list_display = (
+        'volunteer',
+        'name',
+        'year',
+        'expiration_year',
+        'remind',
+        'volunteer_contact_info',
+        'volunteer_status'.
+    )
+    fields = (
+        'volunteer',
+        'name',
+        'year',
+        'expiration_year',
+        'remind',
+    )
+    search_fields = ('name', 'year', 'expiration_year', 'remind',)
+    list_filter = ('name', 'year', 'expiration_year', 'remind',)
+    ordering = ('name', '-year', '-expiration_year',)
+
+    def volunteer_contact_info(self, obj):
+        phone = obj.volunteer.phone
+        email = obj.volunteer.email
+        phone = '_' if phone is '' else phone
+        email = '_' if email is '' else email
+        return "Phone: %s, Email: %s" %(phone, email,)
+
+    def volunteer_status(self, obj):
+        is_active = obj.volunteer.is_active
+        show_active = 'Active' if is_active else 'Inactive'
+        return show_active
+
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = (
         'volunteer',
@@ -30,6 +63,7 @@ class ExperienceAdmin(admin.ModelAdmin):
         'event_year',
         'work_hours',
         'volunteer_contact_info',
+        'volunteer_status',
     )
     fields = (
         'volunteer',
@@ -49,6 +83,12 @@ class ExperienceAdmin(admin.ModelAdmin):
         email = '_' if email is '' else email
         return "Phone: %s, Email: %s" %(phone, email,)
 
+    def volunteer_status(self, obj):
+        is_active = obj.volunteer.is_active
+        show_active = 'Active' if is_active else 'Inactive'
+        return show_active
+
 admin.site.register(Volunteer, VolunteerAdmin)
+admin.site.register(Training, TrainingAdmin)
 admin.site.register(Experience, ExperienceAdmin)
 
