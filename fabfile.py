@@ -9,6 +9,7 @@ def prepare_deployment():
     with lcd(DEV_ROOT):
         local('python manage.py test vla')
         local('git add -p && git commit')
+        local('git push origin -- master') # TODO: have a dev branch
 
 def start_uwsgi():
     with lcd(APP_ROOT):

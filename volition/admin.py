@@ -43,8 +43,11 @@ class ExperienceAdmin(admin.ModelAdmin):
     ordering = ('-event_year','event_name',)
 
     def volunteer_contact_info(self, obj):
-        return "Phone: %s\tEmail: %s" %(
-            obj.volunteer.phone, obj.volunteer.email,)
+        phone = obj.volunteer.phone
+        email = obj.volunteer.email
+        phone = '_' if phone is None
+        email = '_' if email is None
+        return "Phone: %s, Email: %s" %(phone, email,)
 
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(Experience, ExperienceAdmin)
