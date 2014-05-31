@@ -76,7 +76,7 @@ class Volunteer(models.Model):
 class Experience(models.Model):
     YEAR_CHOICE = map(
         lambda x: (x, str(x)),
-        range(1980, datetime.now().year+1))
+        range(datetime.now().year+1, -1, 1980))
 
     # A Volunteer is the foreign key for an Experience
     volunteer = models.ForeignKey(
