@@ -5,11 +5,23 @@ DEV_ROOT = '/home/shoeree/projects/vla/'
 APP_ROOT = '/app/django.vancouverlifeguards.com/vla/'
 GIT_URL  = 'git@github.com:shoeree/vla.git'
 
+def update_dev():
+    with lcd(DEV_ROOT):
+        try:
+            local('git checkout dev')
+        except:
+            pass
+        local('git pull origin -- dev')
+
 def prepare():
     with lcd(DEV_ROOT):
         local('python manage.py test vla')
-        local('git add -p && git commit')
-        local('git push origin -- dev')
+        try:
+            local('git add -p && git commit')
+            local('git push origin -- dev')
+        except:
+            print "Commit is unnecessary."
+            pass # do nothing if commit is not needed
         local('git checkout master')
         local('git merge dev')
         local('python manage.py test vla')
