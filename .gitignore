@@ -6,3 +6,6 @@ secret_*
 *.TMP
 *.tmp
 
+/.project
+/.pydevproject
+/.gitignore

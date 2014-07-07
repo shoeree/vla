@@ -75,7 +75,7 @@ class Volunteer(models.Model):
     last_renewal = models.DateField(
         null=True,
         default=None,
-        verbose="Membership renewed on (YYYY-MM-DD)"
+        verbose_name="Membership renewed on (YYYY-MM-DD)"
     )
     is_active = models.BooleanField(
         default=False,
