@@ -21,6 +21,7 @@ def load_volunteers_from_csv(csv_file_name):
         row_ind = 0
         for row in csv_reader:
             if row_ind == 0:
+                row_ind += 1
                 continue
             # Extract the Volunteer info
             last_name = row[CSV_COLS['last_name']]
@@ -31,7 +32,7 @@ def load_volunteers_from_csv(csv_file_name):
             address_city = row[CSV_COLS['address_city']]
             address_postal = row[CSV_COLS['address_postal']]
             comments = row[CSV_COLS['comments']]
-            
+
             if len(last_name) > 0 and len(first_name) > 0:
                 volunteer, created = Volunteer.objects.update_or_create(
                     last_name = last_name,
@@ -43,7 +44,7 @@ def load_volunteers_from_csv(csv_file_name):
                     address_postal = address_postal,
                     comments = comments
                 )
-            
+
                 if created:
                     # new Volunteer was created
                     volunteer.is_active = False
@@ -51,4 +52,7 @@ def load_volunteers_from_csv(csv_file_name):
                 else:
                     print "Updated existing Volunteer: %s" % volunteer
             else:
-                print "Ignoring bad row:\n\t%s" % row
+                print "Ignoring bad row %d:\n\t%s" % (row_ind, row)
+
+            row_ind += 1
+
