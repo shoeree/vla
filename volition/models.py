@@ -95,8 +95,8 @@ class Volunteer(models.Model):
     # Meta options
     class Meta:
         verbose_name = "volunteer information"
-        verbose_name_plural = "volunteer information"
-        ordering = ['is_active','last_name', 'first_name']
+        verbose_name_plural = "volunteers' information"
+        ordering = ['-is_active','last_name', 'first_name']
 
     # Human-friendly reading method
     def __unicode__(self):
