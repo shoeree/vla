@@ -51,13 +51,13 @@ def deploy():
     with lcd(DEV_ROOT):
         local('git checkout master')
         local('git push origin -- master')
-        
+
     with lcd(APP_ROOT):
         # pull most recent commits
         local('git pull origin -- master')
         local('cp %s/vla/secret_settings.py %s/vla/' % (DEV_ROOT, APP_ROOT))
-        local('python manage.py schemamigration volition --auto')
         try:
+            local('python manage.py schemamigration volition --auto')
             local('python manage.py migrate volition')
         except:
             pass
