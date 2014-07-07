@@ -27,11 +27,6 @@ class Volunteer(models.Model):
         null=False,
         verbose_name="First Name"
     )
-    is_active = models.BooleanField(
-        default=False,
-        null=False,
-        verbose_name="Active Member?"
-    )
 
     # Contact info
     email = models.EmailField(
@@ -39,7 +34,7 @@ class Volunteer(models.Model):
         null=True,
         blank=True,
         default=None,
-        verbose_name='e-mail:'
+        verbose_name='e-mail'
     )
     phone = models.CharField(
         max_length=16,
@@ -47,24 +42,61 @@ class Volunteer(models.Model):
         blank=True,
         default=None
     )
-    address = models.CharField(
-        max_length=254,
+    address_house = models.CharField(
+        max_length=200,
         null=True,
         blank=True,
-        default=None
+        default=None,
+        verbose_name="House/Street address"
     )
-    other = models.CharField(
+    address_city = models.CharField(
         max_length=120,
         null=True,
         blank=True,
-        default=None
+        default=None,
+        verbose_name="City"
+    )
+    address_postal = models.CharField(
+        max_length=12,
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name="Postal Code"
+    )
+    address_other = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name="Other address info"
+    )
+    
+    # Membership info
+    last_renewal = models.DateField(
+        null=True,
+        default=None,
+        verbose="Membership renewed on (YYYY-MM-DD)"
+    )
+    is_active = models.BooleanField(
+        default=False,
+        null=False,
+        verbose_name="Active Member?"
+    )
+    
+    # Etc
+    comments = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name="Other info"
     )
 
     # Meta options
     class Meta:
         verbose_name = "volunteer information"
         verbose_name_plural = "volunteer information"
-        ordering = ['last_name', 'first_name']
+        ordering = ['is_active','last_name', 'first_name']
 
     # Human-friendly reading method
     def __unicode__(self):
