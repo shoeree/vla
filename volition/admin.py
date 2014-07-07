@@ -10,16 +10,33 @@ class VolunteerAdmin(admin.ModelAdmin):
         'first_name',
         'email',
         'phone',
-        'address',
+        'address_house',
+        'address_city',
+        'address_postal',
+        'address_other',
+        'last_renewal',
         'is_active',
     )
-    fields = ('last_name','first_name','email','phone','address','is_active',)
+    fields = (
+        'last_name',
+        'first_name',
+        'email',
+        'phone',
+        'address_house',
+        'address_city',
+        'address_postal',
+        'address_other',
+        'last_renewal',
+        'is_active',
+    )
     search_fields = (
         'id',
         'last_name',
         'first_name',
         'email',
         'phone',
+        'address_city',
+        'last_renewal',
         'is_active',
     )
 

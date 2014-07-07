@@ -20,7 +20,7 @@ def prepare():
             local('git add -p && git commit')
             local('git push origin -- dev')
         except:
-            print "Commit is unnecessary."
+            print "*** Commit is unnecessary."
             pass # do nothing if commit is not needed
         local('git checkout master')
         local('git merge dev')
