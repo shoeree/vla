@@ -13,11 +13,15 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(unique=True, primary_key=True)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('email', self.gf('django.db.models.fields.EmailField')(default=None, max_length=254, null=True, blank=True)),
             ('phone', self.gf('django.db.models.fields.CharField')(default=None, max_length=16, null=True, blank=True)),
-            ('address', self.gf('django.db.models.fields.CharField')(default=None, max_length=254, null=True, blank=True)),
-            ('other', self.gf('django.db.models.fields.CharField')(default=None, max_length=120, null=True, blank=True)),
+            ('address_house', self.gf('django.db.models.fields.CharField')(default=None, max_length=200, null=True, blank=True)),
+            ('address_city', self.gf('django.db.models.fields.CharField')(default=None, max_length=120, null=True, blank=True)),
+            ('address_postal', self.gf('django.db.models.fields.CharField')(default=None, max_length=12, null=True, blank=True)),
+            ('address_other', self.gf('django.db.models.fields.CharField')(default=None, max_length=200, null=True, blank=True)),
+            ('last_renewal', self.gf('django.db.models.fields.DateField')(default=None, null=True)),
+            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('comments', self.gf('django.db.models.fields.CharField')(default=None, max_length=200, null=True, blank=True)),
         ))
         db.send_create_signal(u'volition', ['Volunteer'])
 
@@ -28,7 +32,7 @@ class Migration(SchemaMigration):
             ('name', self.gf('django.db.models.fields.CharField')(max_length=120)),
             ('year', self.gf('django.db.models.fields.IntegerField')(default=2014)),
             ('location', self.gf('django.db.models.fields.CharField')(default=None, max_length=254, null=True, blank=True)),
-            ('expiration_year', self.gf('django.db.models.fields.IntegerField')(default=None, null=True)),
+            ('expiration_year', self.gf('django.db.models.fields.IntegerField')(default=-1)),
             ('remind', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal(u'volition', ['Training'])
@@ -66,7 +70,7 @@ class Migration(SchemaMigration):
         },
         u'volition.training': {
             'Meta': {'ordering': "['name', '-year', '-expiration_year']", 'object_name': 'Training'},
-            'expiration_year': ('django.db.models.fields.IntegerField', [], {'default': 'None', 'null': 'True'}),
+            'expiration_year': ('django.db.models.fields.IntegerField', [], {'default': '-1'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'location': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '254', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '120'}),
@@ -75,14 +79,18 @@ class Migration(SchemaMigration):
             'year': ('django.db.models.fields.IntegerField', [], {'default': '2014'})
         },
         u'volition.volunteer': {
-            'Meta': {'ordering': "['last_name', 'first_name']", 'object_name': 'Volunteer'},
-            'address': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '254', 'null': 'True', 'blank': 'True'}),
+            'Meta': {'ordering': "['is_active', 'last_name', 'first_name']", 'object_name': 'Volunteer'},
+            'address_city': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '120', 'null': 'True', 'blank': 'True'}),
+            'address_house': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'address_other': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'address_postal': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '12', 'null': 'True', 'blank': 'True'}),
+            'comments': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'email': ('django.db.models.fields.EmailField', [], {'default': 'None', 'max_length': '254', 'null': 'True', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'id': ('django.db.models.fields.AutoField', [], {'unique': 'True', 'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'other': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '120', 'null': 'True', 'blank': 'True'}),
+            'last_renewal': ('django.db.models.fields.DateField', [], {'default': 'None', 'null': 'True'}),
             'phone': ('django.db.models.fields.CharField', [], {'default': 'None', 'max_length': '16', 'null': 'True', 'blank': 'True'})
         }
     }
