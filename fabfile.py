@@ -56,7 +56,11 @@ def deploy():
         # pull most recent commits
         local('git pull origin -- master')
         local('cp %s/vla/secret_settings.py %s/vla/' % (DEV_ROOT, APP_ROOT))
-        local('python manage.py migrate volition')
+        local('python manage.py schemamigration volition --auto')
+        try:
+            local('python manage.py migrate volition')
+        except:
+            pass
         local('python manage.py test volition')
         reload_uwsgi()
         reload_webserver()
