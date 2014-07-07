@@ -34,7 +34,7 @@ def load_volunteers_from_csv(csv_file_name):
             comments = row[CSV_COLS['comments']]
 
             if len(last_name) > 0 and len(first_name) > 0:
-                volunteer, created = Volunteer.objects.update_or_create(
+                volunteer, created = Volunteer.objects.get_or_create(
                     last_name = last_name,
                     first_name = first_name,
                     email = email,
@@ -43,14 +43,15 @@ def load_volunteers_from_csv(csv_file_name):
                     address_city = address_city,
                     address_postal = address_postal,
                     comments = comments
-                )
+                ) # TODO: in Django 1.7, use update_or_create()
 
                 if created:
                     # new Volunteer was created
                     volunteer.is_active = False
                     print "Created a new Volunteer: %s" % volunteer
                 else:
-                    print "Updated existing Volunteer: %s" % volunteer
+                    pass
+                    #print "Updated existing Volunteer: %s" % volunteer
             else:
                 print "Ignoring bad row %d:\n\t%s" % (row_ind, row)
 
